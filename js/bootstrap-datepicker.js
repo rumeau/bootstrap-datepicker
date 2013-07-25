@@ -193,18 +193,19 @@
 			this.picker.find('.datepicker-days th:eq(1)')
 						.text(DPGlobal.dates.months[month]+' '+year);
 			var prevMonth = new Date(year, month-1, 28,0,0,0,0),
-				day = DPGlobal.getDaysInMonth(prevMonth.getFullYear(), prevMonth.getMonth());
-			prevMonth.setDate(day);
-			prevMonth.setDate(day - (prevMonth.getDay() - this.weekStart + 7)%7);
+				day = DPGlobal.getDaysInMonth(prevMonth.getUTCFullYear(), prevMonth.getUTCMonth());
+			prevMonth.setUTCDate(day);
+			prevMonth.setUTCDate(day - (prevMonth.getUTCDay() - this.weekStart + 7)%7);
+			
 			var nextMonth = new Date(prevMonth);
-			nextMonth.setDate(nextMonth.getDate() + 42);
+			nextMonth.setDate(nextMonth.getUTCDate() + 42);
 			nextMonth = nextMonth.valueOf();
 			var html = [];
 			var clsName,
 				prevY,
 				prevM;
 			while(prevMonth.valueOf() < nextMonth) {
-				if (prevMonth.getDay() === this.weekStart) {
+				if (prevMonth.getUTCDay() === this.weekStart) {
 					html.push('<tr>');
 				}
 				clsName = this.onRender(prevMonth);
@@ -218,11 +219,11 @@
 				if (prevMonth.valueOf() === currentDate) {
 					clsName += ' active';
 				}
-				html.push('<td class="day '+clsName+'">'+prevMonth.getDate() + '</td>');
-				if (prevMonth.getDay() === this.weekEnd) {
+				html.push('<td class="day '+clsName+'">'+prevMonth.getUTCDate() + '</td>');
+				if (prevMonth.getUTCDay() === this.weekEnd) {
 					html.push('</tr>');
 				}
-				prevMonth.setDate(prevMonth.getDate()+1);
+				prevMonth.setUTCDate(prevMonth.getUTCDate()+1);
 			}
 			this.picker.find('.datepicker-days tbody').empty().append(html.join(''));
 			var currentYear = this.date.getFullYear();
